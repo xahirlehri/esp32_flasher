@@ -8,8 +8,8 @@ window.connectDevice = async function () {
     await port.open({ baudRate: 115200 });
     document.getElementById("status").textContent = "✅ Device connected!";
   } catch (error) {
-    console.error(error);
-    document.getElementById("status").textContent = "❌ Failed to connect.";
+    console.error("Connection error:", error);
+    document.getElementById("status").textContent = "❌ Connection failed.";
   }
 };
 
@@ -26,10 +26,10 @@ window.flashFirmware = async function () {
   reader.onload = async function () {
     const firmware = new Uint8Array(reader.result);
     try {
-      await flash(port, firmware, 0x10000); // 65536 = 0x10000 (Arduino flash offset)
-      document.getElementById("status").textContent = "✅ Flash complete!";
+      await flash(port, firmware, 0x10000); // 0x10000 is the flash offset
+      document.getElementById("status").textContent = "✅ Flash successful!";
     } catch (err) {
-      console.error(err);
+      console.error("Flash error:", err);
       document.getElementById("status").textContent = "❌ Flash failed!";
     }
   };
